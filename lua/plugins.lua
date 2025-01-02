@@ -48,9 +48,6 @@ return require('packer').startup(function(use)
         },
       })
 
-      -- Keybindings to handle tree focus and toggle
-      vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-      vim.keymap.set('n', '<leader>n', ':NvimTreeFocus<CR>',  { noremap = true, silent = true })
     end,
   }
   -- ====================
