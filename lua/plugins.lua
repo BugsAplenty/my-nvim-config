@@ -4,6 +4,53 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  -- ====================
+  -- === Which-Key.nvim ===
+  -- ====================
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+      }
+    end
+  }
+
+  -- ====================
+  -- === GitHub Copilot ===
+  -- ====================
+  use {
+    'github/copilot.vim',
+    config = function()
+      -- Enable Copilot
+      vim.cmd [[
+        let g:copilot_no_tab_map = v:true
+        imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+        let g:copilot_assume_mapped = v:true
+        let g:copilot_tab_fallback = ""
+      ]]
+      -- Optional: Add a keybinding to manually trigger Copilot suggestion
+      vim.api.nvim_set_keymap("i", "<C-Space>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
+    end
+  }
+
+  -- ====================
+  -- === vim-fugitive ===
+  -- ====================
+  use {
+    'tpope/vim-fugitive',
+    config = function()
+      -- Optional: Define keybindings for common Git commands
+      vim.api.nvim_set_keymap('n', '<leader>gs', ':G<CR>', { noremap = true, silent = true, desc = "Git Status" })
+      vim.api.nvim_set_keymap('n', '<leader>gc', ':Gcommit<CR>', { noremap = true, silent = true, desc = "Git Commit" })
+      vim.api.nvim_set_keymap('n', '<leader>gp', ':Gpush<CR>', { noremap = true, silent = true, desc = "Git Push" })
+      vim.api.nvim_set_keymap('n', '<leader>gl', ':Glog<CR>', { noremap = true, silent = true, desc = "Git Log" })
+      vim.api.nvim_set_keymap('n', '<leader>gb', ':Gblame<CR>', { noremap = true, silent = true, desc = "Git Blame" })
+      vim.api.nvim_set_keymap('n', '<leader>gd', ':Gdiff<CR>', { noremap = true, silent = true, desc = "Git Diff" })
+    end
+  }
+
   -- ===============
   -- === THEMES ===
   -- ===============
@@ -71,8 +118,7 @@ return require('packer').startup(function(use)
   -- === LSP & CMP    ===
   -- ====================
   use 'neovim/nvim-lspconfig'               -- LSP configurations
-  use 'williamboman/mason.nvim'             -- Mason for managing LSP servers
-  use 'williamboman/mason-lspconfig.nvim'   -- Mason bridge to lspconfig
+  use 'williamboman/mason-lspconfig.nvim'   -- Mason LSP configurations
   use 'hrsh7th/nvim-cmp'                    -- Autocompletion plugin
   use 'hrsh7th/cmp-nvim-lsp'                -- LSP source for nvim-cmp
   use 'L3MON4D3/LuaSnip'                    -- Snippets plugin
@@ -214,16 +260,6 @@ return require('packer').startup(function(use)
             package_uninstalled = "✗",
           },
         },
-      })
-    end
-  }
-
-  use {
-    'williamboman/mason-lspconfig.nvim',
-    config = function()
-      require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls', 'zls', 'pyright', 'clangd' }, -- List of LSP servers to install
-        automatic_installation = true, -- Automatically install missing servers
       })
     end
   }
